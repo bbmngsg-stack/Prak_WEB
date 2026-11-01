@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Produk — Muhun Leather Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+  <!-- Loading Guard -->
+  <div id="auth-loading" class="auth-loading">
+    <div class="spinner" aria-label="Loading"></div>
+    <p>Memeriksa autentikasi...</p>
+  </div>
+
+  <div id="admin-app" class="admin-app" style="display:none">
+    <!-- Admin Header -->
+    <header class="admin-header">
+      <div class="admin-header-inner container">
+        <a href="index.html" class="logo-link">
+          <span class="logo-text">MUHUN LEATHER</span>
+        </a>
+        <div class="admin-header-right">
+          <span id="admin-user-name" class="admin-user-name">Admin</span>
+          <button id="logout-btn" class="btn btn-outline admin-logout-btn">Keluar</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Admin Nav -->
+    <nav class="admin-nav">
+      <div class="container">
+        <a href="index.html" class="admin-nav-link">Dashboard</a>
+        <a href="products.html" class="admin-nav-link active">Produk</a>
+        <a href="settings.html" class="admin-nav-link">Pengaturan</a>
+      </div>
+    </nav>
+
+    <main class="admin-main">
+      <div class="container">
+        <div class="admin-page-header">
+          <h1 class="admin-page-title">Daftar Produk</h1>
+        </div>
+
+        <!-- Product Table -->
+        <div class="admin-card">
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Foto</th>
+                  <th>Nama Produk</th>
+                  <th>Kategori</th>
+                  <th>Harga (IDR)</th>
+                  <th>Diskon</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="products-table-body">
+                <tr>
+                  <td colspan="7" style="text-align:center; padding: 32px;">Memuat produk...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { guardAdmin } from '../js/admin/guard.js';
+    import { supabase } from '../js/supabase-client.js';
+    import { signOut } from '../js/api/auth.js';
+    import { formatPrice } from '../js/i18n.js';
+    import { $, el, clearChildren } from '../js/ui/dom.js';
+
+    async function init() {
+      const profile = await guardAdmin();
+      if (!profile) return;
+
+      $('#auth-loading').style.display = 'none';
+      $('#admin-app').style.display = 'block';
+      $('#admin-user-name').textContent = profile.full_name || profile.username || 'Admin';
+
+      $('#logout-btn').addEventListener('click', async () => {
+        await signOut();
+        window.location.replace('login.html');
+      });
+
+      await loadProductsTable();
+    }
+
+    async function loadProductsTable() {
+      const tbody = $('#products-table-body');
+      try {
+        const { data: products, error } = await supabase
+          .from('products')
+          .select(`
+            id, slug, category, name_id, price_idr, discount_percent, is_published,
+            product_images(path_thumb, is_cover)
+          `)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        clearChildren(tbody);
+
+        if (!products || products.length === 0) {
+          tbody.appendChild(el('tr', {}, [
+            el('td', { colSpan: 7, style: { textAlign: 'center', padding: '32px' }, textContent: 'Belum ada produk.' })
+          ]));
+          return;
+        }
+
+        products.forEach(p => {
+          const cover = p.product_images?.find(i => i.is_cover)?.path_thumb 
+            || p.product_images?.[0]?.path_thumb 
+            || 'https://placehold.co/80x100/FFE9CE/3B2A26?text=Foto';
+
+          const row = el('tr', {}, [
+            el('td', {}, [
+              el('img', { src: cover, width: 48, height: 60, style: { objectFit: 'cover', borderRadius: '4px' } })
+            ]),
+            el('td', { style: { fontWeight: '500' } }, [
+              el('span', { textContent: p.name_id }),
+              el('br'),
+              el('small', { style: { color: '#888' }, textContent: `/${p.slug}` })
+            ]),
+            el('td', { style: { textTransform: 'capitalize' }, textContent: p.category }),
+            el('td', { textContent: formatPrice(p.price_idr) }),
+            el('td', { textContent: p.discount_percent > 0 ? `-${p.discount_percent}%` : '-' }),
+            el('td', {}, [
+              el('span', {
+                className: `badge ${p.is_published ? 'badge-new' : 'badge-out'}`,
+                textContent: p.is_published ? 'Terpublish' : 'Draf'
+              })
+            ]),
+            el('td', {}, [
+              el('a', {
+                className: 'btn btn-sm btn-outline',
+                href: `../product.html?slug=${p.slug}`,
+                target: '_blank',
+                textContent: 'Lihat'
+              })
+            ])
+          ]);
+
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error(err);
+        clearChildren(tbody);
+        tbody.appendChild(el('tr', {}, [
+          el('td', { colSpan: 7, style: { color: 'red', textAlign: 'center' }, textContent: 'Gagal memuat produk.' })
+        ]));
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

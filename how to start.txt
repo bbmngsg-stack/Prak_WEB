@@ -1,0 +1,25 @@
+# Opsi 1: Menggunakan Python
+python -m http.server 8000
+
+# Opsi 2: Menggunakan Node.js
+npx serve .
+
+Cara 1: Akses Langsung lewat URL (Paling Direkomendasikan)
+
+Buka tautan ini di browser Anda: 👉 http://localhost:8000/admin/login.html
+(atau cukup ketik http://localhost:8000/admin/, sistem akan otomatis mengarahkan ke halaman login)
+
+Cara 2: Tautan Tersamar di Bagian Bawah (Footer)
+
+Di bagian paling bawah setiap halaman web (Beranda, Katalog, maupun Detail Produk), tepat di samping kanan tulisan hak cipta © 2024 Muhun Leather, terdapat tautan rahasia/tersamar bertuliskan: 👉 🔒 Staff
+
+Tautan ini dibuat samar dengan opasitas rendah agar mata pengunjung umum tidak terpancing, namun memudahkan pemilik/staf untuk langsung mengkliknya.
+
+🔑 Kredensial Akun Admin Siap Pakai:
+
+Akun telah diaktivasi di Supabase Auth & Profiles:
+
+Username: admin_muhun
+(atau gunakan Email: muhun.leather@gmail.com)
+Password: AdminPassword123!
+Peran (Role): Owner (Akses penuh)

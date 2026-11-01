@@ -1,0 +1,72 @@
+/* ============================================================
+   tokens.css — Muhun Leather Design Tokens
+   Single source of truth for colors, typography, spacing,
+   radii, shadows, transitions, and layout constants.
+   ============================================================ */
+
+:root {
+  /* ── Brand Colors ─────────────────────────────────────────── */
+  --color-primary:        #FFBE86;   /* warm peach – primary actions  */
+  --color-surface:        #FFE9CE;   /* light cream – card / section  */
+  --color-accent:         #D7816A;   /* terracotta  – CTA / highlight */
+  --color-neutral:        #A37871;   /* muted mauve – secondary text  */
+  --color-ink:            #3B2A26;   /* dark brown  – body text       */
+  --color-neutral-strong: #6F4F49;   /* deeper mauve – subtitles      */
+  --color-bg:             #FFFAF4;   /* warm white  – page background */
+  --color-gold:           #C9A66B;   /* antique gold – "New" badge    */
+  --color-danger:         #B3412F;   /* deep red    – errors / OOS    */
+  --color-success:        #4C7A4F;   /* forest green – in-stock       */
+  --color-white:          #FFFFFF;
+
+  /* ── Typography ───────────────────────────────────────────── */
+  --font-heading: "Cormorant Garamond", serif;
+  --font-body:    "Jost", system-ui, sans-serif;
+
+  /* ── Spacing Scale (4 px base) ────────────────────────────── */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-12: 48px;
+  --space-18: 72px;
+  --space-24: 96px;
+
+  /* ── Radius & Shadow ──────────────────────────────────────── */
+  --radius:       4px;
+  --radius-lg:    8px;
+  --shadow:       0 6px 24px rgba(59, 42, 38, .08);
+  --shadow-hover: 0 8px 32px rgba(59, 42, 38, .12);
+
+  /* ── Transitions ──────────────────────────────────────────── */
+  --transition:      200ms ease;
+  --transition-slow: 300ms ease;
+
+  /* ── Layout ───────────────────────────────────────────────── */
+  --container-max: 1200px;
+  --header-height: 64px;
+
+  /* ── Convenient Aliases ───────────────────────────────────── */
+  --color-text: var(--color-ink);
+  --color-text-muted: var(--color-neutral-strong);
+  --color-border: rgba(163, 120, 113, 0.35);
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 72px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --shadow-md: var(--shadow);
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --transition-fast: 150ms ease;
+  --z-header: 100;
+}

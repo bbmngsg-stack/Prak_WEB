@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Muhun Leather Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+  <!-- Loading Guard (shown until auth check passes) -->
+  <div id="auth-loading" class="auth-loading">
+    <div class="spinner" aria-label="Loading"></div>
+    <p data-i18n="admin.loading">Loading...</p>
+  </div>
+
+  <!-- Admin Content (hidden until auth guard passes) -->
+  <div id="admin-app" class="admin-app" style="display:none">
+    <!-- Admin Header -->
+    <header class="admin-header">
+      <div class="admin-header-inner container">
+        <a href="../index.html" class="logo-link">
+          <span class="logo-text">MUHUN LEATHER</span>
+        </a>
+        <div class="admin-header-right">
+          <span id="admin-user-name" class="admin-user-name" data-i18n="admin.user">Admin</span>
+          <button id="logout-btn" class="btn btn-outline admin-logout-btn" data-i18n="admin.logout">Keluar</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Admin Nav -->
+    <nav class="admin-nav">
+      <div class="container">
+        <a href="index.html" class="admin-nav-link active" data-i18n="admin.nav.dashboard">Dashboard</a>
+        <a href="products.html" class="admin-nav-link" data-i18n="admin.nav.products">Produk</a>
+        <a href="settings.html" class="admin-nav-link" data-i18n="admin.nav.settings">Pengaturan</a>
+      </div>
+    </nav>
+
+    <main class="admin-main">
+      <div class="container">
+        <h1 class="admin-page-title" data-i18n="admin.dashboard.title">Dashboard</h1>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <!-- Total Products -->
+          <div class="stat-card">
+            <div class="stat-icon" aria-hidden="true">📦</div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-total">—</span>
+              <span class="stat-label" data-i18n="admin.dashboard.total">Total Produk</span>
+            </div>
+          </div>
+
+          <!-- Published -->
+          <div class="stat-card">
+            <div class="stat-icon" aria-hidden="true">✅</div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-published">—</span>
+              <span class="stat-label" data-i18n="admin.dashboard.published">Terpublish</span>
+            </div>
+          </div>
+
+          <!-- Drafts -->
+          <div class="stat-card">
+            <div class="stat-icon" aria-hidden="true">📝</div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-drafts">—</span>
+              <span class="stat-label" data-i18n="admin.dashboard.drafts">Draf</span>
+            </div>
+          </div>
+
+          <!-- Low Stock -->
+          <div class="stat-card stat-card-warning">
+            <div class="stat-icon" aria-hidden="true">⚠️</div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-low-stock">—</span>
+              <span class="stat-label" data-i18n="admin.dashboard.low_stock">Stok Menipis</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <section class="admin-section">
+          <h2 class="admin-section-title" data-i18n="admin.dashboard.quick_actions">Aksi Cepat</h2>
+          <div class="quick-actions">
+            <a href="products.html?action=add" class="btn btn-primary" data-i18n="admin.dashboard.add_product">+ Tambah Produk</a>
+            <a href="products.html" class="btn btn-secondary" data-i18n="admin.dashboard.manage_products">Kelola Produk</a>
+            <a href="settings.html" class="btn btn-secondary" data-i18n="admin.dashboard.settings">Pengaturan</a>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="../js/admin/dashboard.js"></script>
+</body>
+</html>

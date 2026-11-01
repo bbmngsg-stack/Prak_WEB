@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muhun Leather — Katalog Kulit Wanita</title>
+  <meta name="description" content="Koleksi tas, sepatu, dan sandal kulit wanita berkualitas tinggi dari Muhun Leather">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Muhun Leather — Katalog Kulit Wanita">
+  <meta property="og:description" content="Koleksi tas, sepatu, dan sandal kulit wanita berkualitas tinggi">
+  <meta property="og:type" content="website">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner container">
+      <a href="index.html" class="logo-link">
+        <span class="logo-text">MUHUN LEATHER</span>
+      </a>
+      <nav class="nav-desktop">
+        <a href="index.html" class="nav-link active" data-i18n="nav.home">Beranda</a>
+        <a href="catalog.html" class="nav-link" data-i18n="nav.catalog">Katalog</a>
+      </nav>
+      <div class="header-actions">
+        <div class="lang-switch">
+          <button class="lang-btn active" data-lang="id">ID</button>
+          <span class="lang-divider">|</span>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <button class="hamburger" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <nav class="mobile-menu">
+      <a href="index.html" class="nav-link active" data-i18n="nav.home">Beranda</a>
+      <a href="catalog.html" class="nav-link" data-i18n="nav.catalog">Katalog</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content container">
+        <h1 class="hero-title" data-i18n="hero.title">Kulit Pilihan, Langkah Percaya Diri</h1>
+        <p class="hero-subtitle" data-i18n="hero.subtitle">Koleksi tas, sepatu, dan sandal kulit wanita dengan kualitas terbaik</p>
+        <a href="catalog.html" class="btn btn-primary hero-cta" data-i18n="hero.cta">Lihat Katalog</a>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title" data-i18n="home.categories">Kategori</h2>
+        <div class="category-grid">
+          <a href="catalog.html?category=tas" class="category-card">
+            <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&h=800&fit=crop" alt="Tas Kulit" loading="lazy" width="600" height="800">
+            <div class="category-card-label">
+              <span data-i18n="category.tas">Tas</span>
+            </div>
+          </a>
+          <a href="catalog.html?category=sepatu" class="category-card">
+            <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&h=800&fit=crop" alt="Sepatu Kulit" loading="lazy" width="600" height="800">
+            <div class="category-card-label">
+              <span data-i18n="category.sepatu">Sepatu</span>
+            </div>
+          </a>
+          <a href="catalog.html?category=sandal" class="category-card">
+            <img src="https://images.unsplash.com/photo-1603487742131-4160ec999306?w=600&h=800&fit=crop" alt="Sandal Kulit" loading="lazy" width="600" height="800">
+            <div class="category-card-label">
+              <span data-i18n="category.sandal">Sandal</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="section section-surface">
+      <div class="container">
+        <h2 class="section-title" data-i18n="home.featured">Produk Unggulan</h2>
+        <div id="featured-grid" class="product-grid">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section">
+      <div class="container about-section">
+        <h2 class="section-title" data-i18n="home.about.title">Tentang Muhun Leather</h2>
+        <p class="about-text" data-i18n="home.about.text">Muhun Leather menghadirkan koleksi tas, sepatu, dan sandal kulit wanita berkualitas tinggi. Setiap produk dibuat dengan ketelitian dan bahan kulit pilihan untuk menemani langkah percaya dirimu.</p>
+        <div class="store-links">
+          <h3 data-i18n="home.store_links">Kunjungi Toko Kami</h3>
+          <div class="store-buttons">
+            <a id="shopee-store-link" href="#" class="btn btn-secondary" target="_blank" rel="noopener noreferrer" style="display:none">
+              🛒 Shopee
+            </a>
+            <a id="tiktok-store-link" href="#" class="btn btn-secondary" target="_blank" rel="noopener noreferrer" style="display:none">
+              🎵 TikTok Shop
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact / WhatsApp (ONLY on homepage) -->
+    <section class="contact-section">
+      <div class="container">
+        <h2 class="contact-title" data-i18n="home.contact.title">Butuh bantuan memilih?</h2>
+        <p class="contact-subtitle" data-i18n="home.contact.subtitle">Hubungi kami untuk konsultasi produk dan pemesanan</p>
+        <a id="wa-button" href="https://wa.me/6281234567890" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer" data-i18n="home.contact.cta">
+          Hubungi via WhatsApp
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <div class="footer-col">
+        <span class="footer-logo">MUHUN LEATHER</span>
+        <p class="footer-tagline" data-i18n="site.tagline">Kulit pilihan, langkah percaya diri</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.catalog">Katalog</h4>
+        <a href="catalog.html?category=tas" data-i18n="category.tas">Tas</a>
+        <a href="catalog.html?category=sepatu" data-i18n="category.sepatu">Sepatu</a>
+        <a href="catalog.html?category=sandal" data-i18n="category.sandal">Sandal</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.contact">Kontak</h4>
+        <a id="footer-shopee" href="#" target="_blank" rel="noopener noreferrer">Shopee</a>
+        <a id="footer-tiktok" href="#" target="_blank" rel="noopener noreferrer">TikTok Shop</a>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <p data-i18n="footer.copyright">© 2024 Muhun Leather. Hak cipta dilindungi.</p>
+      <a href="admin/login.html" class="discreet-admin-link" title="Staff Login" aria-label="Staff Login">🔒 Staff</a>
+    </div>
+  </footer>
+
+  <script type="module" src="js/pages/home.js"></script>
+</body>
+</html>

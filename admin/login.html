@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Muhun Leather Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+  <!-- Minimal Header (logo only, no nav) -->
+  <header class="site-header admin-header-minimal">
+    <div class="header-inner container">
+      <a href="../index.html" class="logo-link">
+        <span class="logo-text">MUHUN LEATHER</span>
+      </a>
+      <div class="header-actions">
+        <div class="lang-switch">
+          <button class="lang-btn active" data-lang="id">ID</button>
+          <span class="lang-divider">|</span>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="login-main">
+    <div class="login-card">
+      <!-- Logo -->
+      <div class="login-logo">
+        <span class="logo-text">MUHUN LEATHER</span>
+      </div>
+
+      <h1 class="login-title" data-i18n="admin.login.title">Login Admin</h1>
+
+      <!-- Error Message (hidden by default) -->
+      <div id="login-error" class="alert alert-error" role="alert" style="display:none">
+        <p id="login-error-text" data-i18n="admin.login.error">Email atau password salah.</p>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="login-form" novalidate>
+        <div class="form-group">
+          <label for="login-email" data-i18n="admin.login.email_label">Email</label>
+          <input
+            type="email"
+            id="login-email"
+            class="form-input"
+            placeholder="admin@muhunleather.com"
+            data-i18n-placeholder="admin.login.email_placeholder"
+            required
+            autocomplete="email"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="login-password" data-i18n="admin.login.password_label">Password</label>
+          <div class="password-input-wrap">
+            <input
+              type="password"
+              id="login-password"
+              class="form-input"
+              placeholder="••••••••"
+              required
+              autocomplete="current-password"
+            >
+            <button
+              type="button"
+              class="password-toggle"
+              aria-label="Tampilkan password"
+              data-i18n-aria-label="admin.login.show_password"
+            >
+              <!-- Eye icon -->
+              <svg class="eye-icon eye-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <!-- Eye-off icon (hidden by default) -->
+              <svg class="eye-icon eye-closed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path>
+                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="login-submit" class="btn btn-primary login-btn" data-i18n="admin.login.submit">
+          Masuk
+        </button>
+      </form>
+
+      <!-- Help Links -->
+      <div class="login-help">
+        <a href="#" class="help-link" data-i18n="admin.login.forgot_password">Lupa password?</a>
+        <span class="help-divider">·</span>
+        <a href="#" class="help-link" data-i18n="admin.login.forgot_username">Lupa username?</a>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { signIn } from '../js/api/auth.js';
+    import { initI18n } from '../js/i18n.js';
+
+    // Initialize i18n
+    initI18n();
+
+    // DOM references
+    const form = document.getElementById('login-form');
+    const emailInput = document.getElementById('login-email');
+    const passwordInput = document.getElementById('login-password');
+    const submitBtn = document.getElementById('login-submit');
+    const errorBox = document.getElementById('login-error');
+    const errorText = document.getElementById('login-error-text');
+    const passwordToggle = document.querySelector('.password-toggle');
+
+    // Password show/hide toggle
+    passwordToggle.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+
+      // Toggle eye icons
+      const eyeOpen = passwordToggle.querySelector('.eye-open');
+      const eyeClosed = passwordToggle.querySelector('.eye-closed');
+      eyeOpen.style.display = isPassword ? 'none' : 'block';
+      eyeClosed.style.display = isPassword ? 'block' : 'none';
+    });
+
+    // Form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Hide previous errors
+      errorBox.style.display = 'none';
+
+      // Get form values
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      // Basic validation
+      if (!email || !password) {
+        errorText.textContent = 'Mohon isi semua field.';
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      // Disable button while loading
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Memuat...';
+
+      try {
+        const result = await signIn(email, password);
+
+        if (result.error) {
+          errorText.textContent = result.error.message || 'Email atau password salah.';
+          errorBox.style.display = 'block';
+        } else {
+          // Redirect to admin dashboard on success
+          window.location.href = 'index.html';
+        }
+      } catch (err) {
+        errorText.textContent = err.message || 'Terjadi kesalahan. Silakan coba lagi.';
+        errorBox.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Masuk';
+      }
+    });
+  </script>
+</body>
+</html>

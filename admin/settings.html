@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengaturan Situs — Muhun Leather Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+  <!-- Loading Guard -->
+  <div id="auth-loading" class="auth-loading">
+    <div class="spinner" aria-label="Loading"></div>
+    <p>Memeriksa autentikasi...</p>
+  </div>
+
+  <div id="admin-app" class="admin-app" style="display:none">
+    <!-- Admin Header -->
+    <header class="admin-header">
+      <div class="admin-header-inner container">
+        <a href="index.html" class="logo-link">
+          <span class="logo-text">MUHUN LEATHER</span>
+        </a>
+        <div class="admin-header-right">
+          <span id="admin-user-name" class="admin-user-name">Admin</span>
+          <button id="logout-btn" class="btn btn-outline admin-logout-btn">Keluar</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Admin Nav -->
+    <nav class="admin-nav">
+      <div class="container">
+        <a href="index.html" class="admin-nav-link">Dashboard</a>
+        <a href="products.html" class="admin-nav-link">Produk</a>
+        <a href="settings.html" class="admin-nav-link active">Pengaturan</a>
+      </div>
+    </nav>
+
+    <main class="admin-main">
+      <div class="container" style="max-width: 720px;">
+        <h1 class="admin-page-title">Pengaturan Toko & Kontak</h1>
+
+        <div class="admin-card">
+          <form id="settings-form" class="admin-form">
+            <div class="form-group">
+              <label for="wa-number">Nomor WhatsApp Resmi (hanya angka, diawali 62)</label>
+              <input type="text" id="wa-number" class="form-input" placeholder="6281234567890">
+              <small class="form-help">Tombol WhatsApp hanya akan muncul di bagian bawah Beranda.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="wa-message">Pesan Default WhatsApp</label>
+              <textarea id="wa-message" class="form-input" rows="3" placeholder="Halo Muhun Leather, saya ingin bertanya tentang produk."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="shopee-url">URL Toko Shopee</label>
+              <input type="url" id="shopee-url" class="form-input" placeholder="https://shopee.co.id/muhunleather">
+            </div>
+
+            <div class="form-group">
+              <label for="tiktok-url">URL Toko TikTok Shop</label>
+              <input type="url" id="tiktok-url" class="form-input" placeholder="https://tiktok.com/@muhunleather">
+            </div>
+
+            <button type="submit" id="save-settings-btn" class="btn btn-primary" style="margin-top: 16px;">
+              Simpan Pengaturan
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { guardAdmin } from '../js/admin/guard.js';
+    import { supabase } from '../js/supabase-client.js';
+    import { signOut } from '../js/api/auth.js';
+    import { showToast } from '../js/ui/toast.js';
+    import { $ } from '../js/ui/dom.js';
+
+    async function init() {
+      const profile = await guardAdmin();
+      if (!profile) return;
+
+      $('#auth-loading').style.display = 'none';
+      $('#admin-app').style.display = 'block';
+      $('#admin-user-name').textContent = profile.full_name || profile.username || 'Admin';
+
+      $('#logout-btn').addEventListener('click', async () => {
+        await signOut();
+        window.location.replace('login.html');
+      });
+
+      await loadSettings();
+
+      $('#settings-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await saveSettings();
+      });
+    }
+
+    async function loadSettings() {
+      try {
+        const { data, error } = await supabase.from('site_settings').select('key, value');
+        if (error) throw error;
+
+        const map = {};
+        data?.forEach(row => { map[row.key] = row.value; });
+
+        if (map.whatsapp_number) $('#wa-number').value = map.whatsapp_number;
+        if (map.whatsapp_message) $('#wa-message').value = map.whatsapp_message;
+        if (map.shopee_store_url) $('#shopee-url').value = map.shopee_store_url;
+        if (map.tiktok_store_url) $('#tiktok-url').value = map.tiktok_store_url;
+      } catch (err) {
+        console.error('Failed to load settings:', err);
+      }
+    }
+
+    async function saveSettings() {
+      const btn = $('#save-settings-btn');
+      btn.disabled = true;
+      btn.textContent = 'Menyimpan...';
+
+      try {
+        const waNum = $('#wa-number').value.trim();
+        const waMsg = $('#wa-message').value.trim();
+        const shopee = $('#shopee-url').value.trim();
+        const tiktok = $('#tiktok-url').value.trim();
+
+        const updates = [
+          { key: 'whatsapp_number', value: JSON.stringify(waNum) },
+          { key: 'whatsapp_message', value: JSON.stringify(waMsg) },
+          { key: 'shopee_store_url', value: JSON.stringify(shopee) },
+          { key: 'tiktok_store_url', value: JSON.stringify(tiktok) }
+        ];
+
+        for (const item of updates) {
+          await supabase.from('site_settings').upsert({
+            key: item.key,
+            value: item.value,
+            updated_at: new Date().toISOString()
+          });
+        }
+
+        showToast('Pengaturan berhasil disimpan!', 'success');
+      } catch (err) {
+        console.error(err);
+        showToast('Gagal menyimpan pengaturan: ' + (err.message || 'Error'), 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Simpan Pengaturan';
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
