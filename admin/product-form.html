@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Produk — Muhun Leather Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+  <div id="auth-loading" class="auth-loading"><div class="spinner" aria-label="Loading"></div><p>Memeriksa autentikasi...</p></div>
+  <div id="admin-app" class="admin-app" style="display:none">
+    <header class="admin-header"><div class="admin-header-inner container">
+      <a href="index.html" class="logo-link"><span class="logo-text">MUHUN LEATHER</span></a>
+      <div class="admin-header-right"><span id="admin-user-name" class="admin-user-name">Admin</span><button id="logout-btn" class="btn btn-outline admin-logout-btn">Keluar</button></div>
+    </div></header>
+    <nav class="admin-nav"><div class="container">
+      <a href="index.html" class="admin-nav-link">Dashboard</a>
+      <a href="products.html" class="admin-nav-link active">Produk</a>
+      <a href="settings.html" class="admin-nav-link">Pengaturan</a>
+    </div></nav>
+    <main class="admin-main"><div class="container">
+      <div class="admin-page-header">
+        <h1 id="form-title" class="admin-page-title">Tambah Produk</h1>
+        <a href="products.html" class="btn btn-outline">Kembali</a>
+      </div>
+      <div id="form-message" class="form-message" role="status" aria-live="polite" style="display:none"></div>
+      <form id="product-form" class="admin-product-form">
+        <section class="admin-card form-card">
+          <h2 class="admin-section-title">Informasi Produk</h2>
+          <div class="form-grid">
+            <div class="form-group"><label for="name-id">Nama produk (Indonesia) *</label><input class="form-input" id="name-id" required maxlength="160"></div>
+            <div class="form-group"><label for="name-en">Nama produk (Inggris)</label><input class="form-input" id="name-en" maxlength="160"></div>
+            <div class="form-group"><label for="slug">Slug URL *</label><input class="form-input" id="slug" required pattern="[a-z0-9]+(-[a-z0-9]+)*" maxlength="180"><small>Gunakan huruf kecil, angka, dan tanda hubung.</small></div>
+            <div class="form-group"><label for="category">Jenis produk *</label><select class="form-input" id="category" required><option value="tas">Tas</option><option value="sepatu">Sepatu</option><option value="sandal">Sandal</option></select></div>
+            <div class="form-group"><label for="price">Harga (Rp) *</label><input class="form-input" id="price" type="number" min="1" step="1" required></div>
+            <div class="form-group"><label for="discount">Diskon (%)</label><input class="form-input" id="discount" type="number" min="0" max="90" value="0"></div>
+            <div class="form-group"><label for="discount-ends">Diskon berakhir (opsional)</label><input class="form-input" id="discount-ends" type="datetime-local"></div>
+            <div class="form-group"><label for="status">Status katalog</label><select class="form-input" id="status"><option value="false">Draf (disembunyikan)</option><option value="true">Terbitkan</option></select></div>
+            <div class="form-group form-grid-wide"><label for="description-id">Deskripsi (Indonesia)</label><textarea class="form-input" id="description-id" rows="4" maxlength="3000"></textarea></div>
+            <div class="form-group form-grid-wide"><label for="description-en">Deskripsi (Inggris)</label><textarea class="form-input" id="description-en" rows="4" maxlength="3000"></textarea></div>
+            <div class="form-group"><label for="shopee-url">URL Shopee</label><input class="form-input" id="shopee-url" type="url" placeholder="https://..."></div>
+            <div class="form-group"><label for="tiktok-url">URL TikTok Shop</label><input class="form-input" id="tiktok-url" type="url" placeholder="https://..."></div>
+            <label class="form-check form-grid-wide"><input id="featured" type="checkbox"><span>Tampilkan sebagai produk unggulan</span></label>
+          </div>
+        </section>
+
+        <section class="admin-card form-card">
+          <div class="form-section-heading"><div><h2 class="admin-section-title">Warna dan Stok</h2><p>Stok dikelola per warna; sepatu dan sandal juga per ukuran.</p></div><button id="add-color" type="button" class="btn btn-outline">+ Tambah warna</button></div>
+          <div id="variant-groups" class="variant-groups"></div>
+        </section>
+
+        <section class="admin-card form-card">
+          <div class="form-section-heading"><div><h2 class="admin-section-title">Foto Produk</h2><p>JPG, PNG, atau WebP hingga 8 MB. Foto diproses menjadi WebP sebelum diunggah.</p></div></div>
+          <label class="form-group"><span>Tambah foto</span><input id="image-files" type="file" accept="image/jpeg,image/png,image/webp" multiple></label>
+          <div id="image-list" class="admin-image-list"></div>
+        </section>
+
+        <div class="form-actions"><a href="products.html" class="btn btn-outline">Batal</a><button id="save-product" type="submit" class="btn btn-primary">Simpan Produk</button></div>
+      </form>
+    </div></main>
+  </div>
+  <script type="module" src="../js/admin/product-form.js"></script>
+</body>
+</html>
